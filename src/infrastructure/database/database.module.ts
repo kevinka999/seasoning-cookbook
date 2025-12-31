@@ -1,22 +1,10 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import {
-  UserSchema,
-  UserSchemaFactory,
-} from './schemas/user.schema';
-import {
-  RecipeSchema,
-  RecipeSchemaFactory,
-} from './schemas/recipe.schema';
-import {
-  PokemonSchema,
-  PokemonSchemaFactory,
-} from './schemas/pokemon.schema';
-import {
-  SeasoningItemSchema,
-  SeasoningItemSchemaFactory,
-} from './schemas/seasoning-item.schema';
+import { UserSchemaFactory } from './schemas/user.schema';
+import { RecipeSchemaFactory } from './schemas/recipe.schema';
+import { PokemonSchemaFactory } from './schemas/pokemon.schema';
+import { SeasoningItemSchemaFactory } from './schemas/seasoning-item.schema';
 
 @Module({
   imports: [
@@ -24,6 +12,7 @@ import {
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
         uri: configService.get<string>('MONGODB_URI'),
+        dbName: 'seasoning-cookbook',
       }),
       inject: [ConfigService],
     }),
@@ -37,4 +26,3 @@ import {
   exports: [MongooseModule],
 })
 export class DatabaseModule {}
-
