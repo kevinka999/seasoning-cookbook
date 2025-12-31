@@ -1,0 +1,102 @@
+---
+alwaysApply: true
+---
+
+# Seasoning Cookbook - Especificação do Sistema
+
+## Visão Geral
+
+O **Seasoning Cookbook** é uma aplicação web que permite aos usuários criar, compartilhar e descobrir receitas de "seasoning" (temperos) para aumentar as chances de capturar ou atrair Pokémons específicos em um jogo.
+
+## Funcionalidades Principais
+
+### 1. Sistema de Autenticação
+
+- **Login com Google OAuth** (implementação inicial)
+- Autenticação via JWT simples (tokens de longa duração para sistema não sensível)
+- **Plano futuro**: Login com email/senha
+- Usuários possuem nickname e in-game nickname (opcional)
+
+### 2. Sistema de Receitas
+
+- Usuários podem criar receitas recomendando combinações de seasoning items
+- Cada receita é composta por:
+  - **3 Seasoning Items** (temperos/itens do jogo)
+  - **1 Pokemon alvo** (o Pokemon que a receita ajuda a atrair/capturar)
+  - **Descrição opcional** (texto explicativo do autor)
+
+### 3. Sistema de Upvote e Ranking
+
+- Usuários podem dar upvote em receitas que funcionaram bem
+- Sistema de ranking baseado em quantidade de upvotes
+- Receitas mais votadas aparecem primeiro nas buscas
+- Prevenção de upvotes duplicados (mesmo usuário não pode votar duas vezes)
+
+### 4. Busca e Descoberta
+
+- Buscar receitas por Pokemon específico
+- Visualizar receitas mais votadas (ranking geral)
+
+## Entidades do Domínio
+
+### User (Usuário)
+
+- Autenticação: Google OAuth (googleId, email, googleProfilePicture)
+- Informações: nickname (obrigatório), inGameNickname (opcional)
+- Metadados: createdAt, updatedAt, lastLoginAt
+
+### Recipe (Receita)
+
+- Relacionamentos: authorId (criador), pokemonId (alvo), seasoningItemIds (3 itens)
+- Conteúdo: description (opcional)
+- Sistema social: upvoteCount, upvotedBy (array de IDs)
+- Metadados: createdAt, updatedAt
+
+### Pokemon
+
+- Informações: id, registrationNumber, name, bucket (raridade)
+- Características: types (array), eggGroups (array)
+
+### SeasoningItem
+
+- Informações: id, itemName, image (opcional)
+- Efeitos: effects (array de ItemEffect)
+- Cada efeito tem: type (EffectType), category (opcional), value (opcional)
+
+## Arquitetura Técnica
+
+### Stack
+
+- **Backend**: NestJS
+- **Banco de Dados**: MongoDB
+- **Arquitetura**: Clean Architecture
+- **Autenticação**: Google OAuth + JWT
+
+### Estrutura de Diretórios
+
+```
+src/
+├── domain/           # Entidades e contratos de repositório
+├── application/      # Casos de uso e controllers
+└── infrastructure/   # Implementações (MongoDB, etc.)
+```
+
+### Otimizações MongoDB
+
+- Índices compostos para queries de ranking eficientes
+- Referências por ID (não embedding) para manter dados desnormalizados
+- Campo `upvoteCount` separado para performance em queries de ordenação
+
+## Regras de Negócio
+
+1. Cada receita deve ter exatamente 3 seasoning items
+2. Usuário não pode dar upvote duplicado na mesma receita
+3. Receitas são ordenadas por upvoteCount (desc) e depois por createdAt (desc)
+4. Sistema de autenticação JWT com tokens de longa duração (sistema não sensível)
+
+## Casos de Uso Principais
+
+1. **Criar Receita**: Usuário autenticado cria uma receita com 3 seasoning items e 1 Pokemon alvo
+2. **Buscar Receitas**: Buscar receitas por Pokemon, por autor, ou ver ranking geral
+3. **Dar Upvote**: Usuário autenticado vota em uma receita que funcionou
+4. **Visualizar Receita**: Ver detalhes da receita, autor, e quantidade de upvotes
