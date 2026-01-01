@@ -99,9 +99,12 @@ src/
 ### 7. DTOs e Validação
 
 - DTOs devem estar junto com seus respectivos UseCases
-- Usar class-validator para validação
-- DTOs de entrada devem validar dados recebidos
-- DTOs de saída devem estruturar dados retornados
+- Usar **Zod** para validação de DTOs de entrada
+- DTOs de entrada devem usar schemas Zod para validação
+- Tipos TypeScript devem ser inferidos dos schemas Zod usando `z.infer<>`
+- Usar `ZodValidationPipe` do `infrastructure/common/zod-validation.pipe.ts` nos controllers para validar dados
+- DTOs de saída devem estruturar dados retornados (podem ser interfaces TypeScript simples)
+- Schemas Zod devem estar no mesmo arquivo do DTO ou em arquivo separado `{feature-name}.schema.ts`
 
 ### 8. Exports Centralizados
 

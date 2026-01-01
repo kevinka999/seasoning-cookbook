@@ -21,4 +21,13 @@ export class PokemonRepository
   protected toEntity(document: PokemonDocument): Pokemon {
     return new Pokemon(document.toObject() as PokemonRegistryItem);
   }
+
+  async searchByName(name: string, limit: number): Promise<Pokemon[]> {
+    const regex = new RegExp(name, 'i');
+    const documents = await this.model
+      .find({ name: { $regex: regex } })
+      .limit(limit)
+      .exec();
+    return documents.map((doc) => this.toEntity(doc));
+  }
 }
