@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigService } from '@nestjs/config';
 import { UserSchemaFactory } from './schemas/user.schema';
 import { RecipeSchemaFactory } from './schemas/recipe.schema';
 import { PokemonSchemaFactory } from './schemas/pokemon.schema';
@@ -9,11 +9,16 @@ import { SeasoningItemSchemaFactory } from './schemas/seasoning-item.schema';
 @Module({
   imports: [
     MongooseModule.forRootAsync({
-      imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => ({
-        uri: configService.get<string>('MONGODB_URI'),
-        dbName: 'seasoning-cookbook',
-      }),
+      useFactory: async (configService: ConfigService) => {
+        const uri = configService.get<string>('MONGODB_URI');
+        if (!uri) {
+          throw new Error('MONGODB_URI environment variable is not defined');
+        }
+        return {
+          uri,
+          dbName: 'seasoning-cookbook',
+        };
+      },
       inject: [ConfigService],
     }),
     MongooseModule.forFeature([
@@ -25,4 +30,4 @@ import { SeasoningItemSchemaFactory } from './schemas/seasoning-item.schema';
   ],
   exports: [MongooseModule],
 })
-export class DatabaseModule {}
+export class MongoModule {}

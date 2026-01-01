@@ -18,7 +18,7 @@ export class RecipeSchema {
   @Prop({ required: true, type: [String] })
   seasoningItemIds: string[];
 
-  @Prop({ required: false, default: null })
+  @Prop({ required: false, default: null, type: String })
   description: string | null;
 
   @Prop({ required: true, default: 0, index: -1 })

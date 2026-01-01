@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { DatabaseModule } from '../database/database.module';
+import { MongoModule } from '../database/mongo.module';
 import { UserRepository } from './user.repository';
 import { RecipeRepository } from './recipe.repository';
 import { PokemonRepository } from './pokemon.repository';
@@ -12,7 +12,7 @@ import {
 } from '../../domain/repositories/repository.tokens';
 
 @Module({
-  imports: [DatabaseModule],
+  imports: [MongoModule],
   providers: [
     {
       provide: USER_REPOSITORY,

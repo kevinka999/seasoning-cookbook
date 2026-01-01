@@ -82,7 +82,7 @@ export class SeasoningItemSchema {
   @Prop({ required: true, type: [ItemEffectSchema] })
   effects: ItemEffect[];
 
-  @Prop({ required: false })
+  @Prop({ required: false, type: String })
   image: string | undefined;
 }
 

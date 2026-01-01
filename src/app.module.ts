@@ -1,17 +1,11 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { RepositoryModule } from './infrastructure/repositories/repository.module';
+import { UseCaseModule } from './application/usecase.module';
+import { CommonModule } from './infrastructure/common/common.module';
 
 @Module({
-  imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-      envFilePath: '.env',
-    }),
-    RepositoryModule,
-  ],
+  imports: [CommonModule, UseCaseModule],
   controllers: [AppController],
   providers: [AppService],
 })

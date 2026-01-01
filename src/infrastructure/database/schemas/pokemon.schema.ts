@@ -17,7 +17,7 @@ export class PokemonSchema {
   @Prop({ required: true })
   registrationNumber: string;
 
-  @Prop({ required: true })
+  @Prop({ required: true, index: true })
   name: string;
 
   @Prop({ required: true, enum: ['common', 'uncommon', 'rare', 'ultra-rare'] })
@@ -32,3 +32,5 @@ export class PokemonSchema {
 
 export const PokemonSchemaFactory = SchemaFactory.createForClass(PokemonSchema);
 
+// Create index for name field to optimize search queries
+PokemonSchemaFactory.index({ name: 1 });
