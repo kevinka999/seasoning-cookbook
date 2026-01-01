@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { createZodDto } from 'nestjs-zod';
 
 export const searchPokemonsQuerySchema = z.object({
   name: z.string().min(1, 'Name is required'),
@@ -13,4 +14,4 @@ export const searchPokemonsQuerySchema = z.object({
     .pipe(z.number().int().min(1).max(100)),
 });
 
-export type SearchPokemonsQueryDto = z.infer<typeof searchPokemonsQuerySchema>;
+export class SearchPokemonsQueryDto extends createZodDto(searchPokemonsQuerySchema) {}

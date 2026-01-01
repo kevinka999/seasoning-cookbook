@@ -11,9 +11,6 @@ import { SeasoningItemSchemaFactory } from './schemas/seasoning-item.schema';
     MongooseModule.forRootAsync({
       useFactory: async (configService: ConfigService) => {
         const uri = configService.get<string>('MONGODB_URI');
-        if (!uri) {
-          throw new Error('MONGODB_URI environment variable is not defined');
-        }
         return {
           uri,
           dbName: 'seasoning-cookbook',

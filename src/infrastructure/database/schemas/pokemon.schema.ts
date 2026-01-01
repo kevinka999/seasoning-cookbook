@@ -31,6 +31,3 @@ export class PokemonSchema {
 }
 
 export const PokemonSchemaFactory = SchemaFactory.createForClass(PokemonSchema);
-
-// Create index for name field to optimize search queries
-PokemonSchemaFactory.index({ name: 1 });
