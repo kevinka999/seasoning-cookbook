@@ -10,22 +10,7 @@ export class UserSchema {
   id: string;
 
   @Prop({ required: true, unique: true })
-  email: string;
-
-  @Prop({
-    required: false,
-    unique: true,
-    sparse: true,
-    default: null,
-    type: String,
-  })
-  googleId: string | null;
-
-  @Prop({ required: false, default: null, type: String })
-  googleProfilePicture: string | null;
-
-  @Prop({ required: false, default: null, type: String })
-  passwordHash: string | null;
+  identityId: string;
 
   @Prop({ required: true })
   nickname: string;
@@ -38,9 +23,6 @@ export class UserSchema {
 
   @Prop({ required: true })
   updatedAt: Date;
-
-  @Prop({ required: false, default: null, type: Date })
-  lastLoginAt: Date | null;
 }
 
 export const UserSchemaFactory = SchemaFactory.createForClass(UserSchema);

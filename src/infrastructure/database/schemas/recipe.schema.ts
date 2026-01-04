@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { RecipeData } from '../../../domain/entities/recipe.entity';
+import { RecipeData, RecipeCategory } from '../../../domain/entities/recipe.entity';
 
 export type RecipeDocument = RecipeData & Document;
 
@@ -20,6 +20,14 @@ export class RecipeSchema {
 
   @Prop({ required: false, default: null, type: String })
   description: string | null;
+
+  @Prop({
+    required: false,
+    type: [String],
+    enum: Object.values(RecipeCategory),
+    default: [],
+  })
+  category: RecipeCategory[];
 
   @Prop({ required: true, default: 0, index: -1 })
   upvoteCount: number;

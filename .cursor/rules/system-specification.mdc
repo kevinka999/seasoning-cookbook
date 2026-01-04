@@ -12,10 +12,19 @@ O **Seasoning Cookbook** é uma aplicação web que permite aos usuários criar,
 
 ### 1. Sistema de Autenticação
 
-- **Login com Google OAuth** (implementação inicial)
-- Autenticação via JWT simples (tokens de longa duração para sistema não sensível)
-- **Plano futuro**: Login com email/senha
-- Usuários possuem nickname e in-game nickname (opcional)
+- **Identity Service Desacoplado**: Autenticação gerenciada por sistema externo
+- O Identity Service é responsável por:
+  - Login com Google OAuth
+  - Login com email/senha
+  - Gerenciamento de tokens JWT
+  - Informações de perfil (email, nome, foto, etc.)
+- **Fluxo de Cadastro no Seasoning Cookbook**:
+  1. Cliente autentica no Identity Service
+  2. Cliente acessa o Seasoning Cookbook com token válido
+  3. Sistema verifica se usuário existe no nosso banco de dados
+  4. Se não existir, usuário é redirecionado para cadastro de informações específicas do app
+  5. Usuário cadastra nickname (obrigatório) e in-game nickname (opcional)
+- Usuários possuem nickname e in-game nickname (opcional) armazenados localmente
 
 ### 2. Sistema de Receitas
 
@@ -41,9 +50,10 @@ O **Seasoning Cookbook** é uma aplicação web que permite aos usuários criar,
 
 ### User (Usuário)
 
-- Autenticação: Google OAuth (googleId, email, googleProfilePicture)
-- Informações: nickname (obrigatório), inGameNickname (opcional)
-- Metadados: createdAt, updatedAt, lastLoginAt
+- **ID**: Referência ao ID do Identity Service (usado como chave primária)
+- **Informações Locais**: nickname (obrigatório), inGameNickname (opcional)
+- **Metadados**: createdAt, updatedAt
+- **Nota**: Autenticação e informações de perfil (email, nome, foto) são gerenciadas pelo Identity Service desacoplado
 
 ### Recipe (Receita)
 
@@ -70,7 +80,7 @@ O **Seasoning Cookbook** é uma aplicação web que permite aos usuários criar,
 - **Backend**: NestJS
 - **Banco de Dados**: MongoDB
 - **Arquitetura**: Clean Architecture
-- **Autenticação**: Google OAuth + JWT
+- **Autenticação**: Identity Service desacoplado (gerencia Google OAuth, email/senha, JWT)
 
 ### Estrutura de Diretórios
 
@@ -92,11 +102,14 @@ src/
 1. Cada receita deve ter exatamente 3 seasoning items
 2. Usuário não pode dar upvote duplicado na mesma receita
 3. Receitas são ordenadas por upvoteCount (desc) e depois por createdAt (desc)
-4. Sistema de autenticação JWT com tokens de longa duração (sistema não sensível)
+4. Autenticação é gerenciada pelo Identity Service desacoplado
+5. Usuário deve estar autenticado no Identity Service antes de acessar funcionalidades do app
+6. Usuário deve completar cadastro local (nickname) após primeira autenticação
 
 ## Casos de Uso Principais
 
-1. **Criar Receita**: Usuário autenticado cria uma receita com 3 seasoning items e 1 Pokemon alvo
-2. **Buscar Receitas**: Buscar receitas por Pokemon, por autor, ou ver ranking geral
-3. **Dar Upvote**: Usuário autenticado vota em uma receita que funcionou
-4. **Visualizar Receita**: Ver detalhes da receita, autor, e quantidade de upvotes
+1. **Cadastrar Usuário Local**: Após autenticação no Identity Service, usuário completa cadastro com nickname e in-game nickname (opcional)
+2. **Criar Receita**: Usuário autenticado cria uma receita com 3 seasoning items e 1 Pokemon alvo
+3. **Buscar Receitas**: Buscar receitas por Pokemon, por autor, ou ver ranking geral
+4. **Dar Upvote**: Usuário autenticado vota em uma receita que funcionou
+5. **Visualizar Receita**: Ver detalhes da receita, autor, e quantidade de upvotes

@@ -19,16 +19,8 @@ export class UserRepository
     return new User(document.toObject() as UserData);
   }
 
-  async findByEmail(email: string): Promise<User | null> {
-    const document = await this.model.findOne({ email }).exec();
-    if (!document) {
-      return null;
-    }
-    return this.toEntity(document);
-  }
-
-  async findByGoogleId(googleId: string): Promise<User | null> {
-    const document = await this.model.findOne({ googleId }).exec();
+  async findByIdentityId(identityId: string): Promise<User | null> {
+    const document = await this.model.findOne({ identityId }).exec();
     if (!document) {
       return null;
     }
