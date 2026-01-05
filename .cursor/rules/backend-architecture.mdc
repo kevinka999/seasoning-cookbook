@@ -105,6 +105,7 @@ src/
 - Usar `ZodValidationPipe` do `infrastructure/common/zod-validation.pipe.ts` nos controllers para validar dados
 - DTOs de saída devem estruturar dados retornados (podem ser interfaces TypeScript simples)
 - Schemas Zod devem estar no mesmo arquivo do DTO ou em arquivo separado `{feature-name}.schema.ts`
+- **NÃO é necessário usar decorators como `createZodDto` para extrair tipos do Zod** - usar diretamente os schemas Zod com `ZodValidationPipe`
 
 ### 8. Exports Centralizados
 
@@ -120,6 +121,8 @@ src/
 - Usar injeção de dependência do NestJS
 - Manter testes unitários para UseCases
 - Manter testes de integração para Controllers e Repositórios
+- **Sempre usar `import type { ... }` para imports de tipos TypeScript** - isso é necessário por causa das regras de linting do TypeScript e ajuda a evitar imports desnecessários no bundle final
+- **NÃO criar comentários no código** - o código deve ser autoexplicativo através de nomes de variáveis, funções e classes bem escolhidos
 
 ### 10. Exemplo de Fluxo
 
