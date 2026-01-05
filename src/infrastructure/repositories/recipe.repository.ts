@@ -1,7 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { RecipeRepositoryInterface } from '../../domain/repositories/recipe.repository.interface';
+import {
+  RecipeRepositoryInterface,
+  RecipeSearchFilters,
+  RecipeSortOptions,
+} from '../../domain/repositories/recipe.repository.interface';
 import { Recipe, RecipeData } from '../../domain/entities/recipe.entity';
 import { RecipeDocument } from '../database/schemas/recipe.schema';
 import { BaseRepositoryImpl } from './base.repository';
@@ -88,5 +92,28 @@ export class RecipeRepository
       return null;
     }
     return this.toEntity(document);
+  }
+
+  async search(
+    filters: RecipeSearchFilters,
+    sort: RecipeSortOptions,
+  ): Promise<Recipe[]> {
+    const query: Record<string, unknown> = {};
+
+    if (filters.pokemonIds && filters.pokemonIds.length > 0) {
+      query.pokemonId = { $in: filters.pokemonIds };
+    }
+
+    if (filters.seasoningItemIds && filters.seasoningItemIds.length > 0) {
+      query.seasoningItemIds = { $all: filters.seasoningItemIds };
+    }
+
+    const sortObject: Record<string, 1 | -1> = {
+      upvoteCount: sort.upvoteCount,
+    };
+
+    const documents = await this.model.find(query).sort(sortObject).exec();
+
+    return documents.map((doc) => this.toEntity(doc));
   }
 }

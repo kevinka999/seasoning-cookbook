@@ -3,6 +3,7 @@ import { CreateUserController } from './users/create-user/create-user.controller
 import { CreateRecipeController } from './recipes/create-recipe/create-recipe.controller';
 import { ToggleUpvoteController } from './recipes/toggle-upvote/toggle-upvote.controller';
 import { ListAllSeasoningItemsController } from './seasoning-items/list-all/list-all-seasoning-items.controller';
+import { SearchRecipesController } from './recipes/search-recipes/search-recipes.controller';
 
 export default [
   SearchPokemonsController,
@@ -10,4 +11,5 @@ export default [
   CreateRecipeController,
   ToggleUpvoteController,
   ListAllSeasoningItemsController,
+  SearchRecipesController,
 ];

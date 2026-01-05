@@ -1,8 +1,12 @@
-import { Injectable, Inject, NotFoundException, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  Inject,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import type { RecipeRepositoryInterface } from '../../../domain/repositories/recipe.repository.interface';
 import { RECIPE_REPOSITORY } from '../../../domain/repositories/repository.tokens';
 import { Recipe } from '../../../domain/entities/recipe.entity';
-import { ToggleUpvoteDto } from './toggle-upvote.dto';
 
 @Injectable()
 export class ToggleUpvoteUseCase {
@@ -13,7 +17,7 @@ export class ToggleUpvoteUseCase {
 
   async execute(recipeId: string, userId: string): Promise<Recipe> {
     const recipe = await this.recipeRepository.findById(recipeId);
-    
+
     if (!recipe) {
       throw new NotFoundException('Recipe not found');
     }
@@ -21,9 +25,12 @@ export class ToggleUpvoteUseCase {
     const hasUpvoted = recipe.upvotedBy.includes(userId);
 
     let updatedRecipe: Recipe | null;
-    
+
     if (hasUpvoted) {
-      updatedRecipe = await this.recipeRepository.removeUpvote(recipeId, userId);
+      updatedRecipe = await this.recipeRepository.removeUpvote(
+        recipeId,
+        userId,
+      );
     } else {
       updatedRecipe = await this.recipeRepository.addUpvote(recipeId, userId);
     }
@@ -35,4 +42,3 @@ export class ToggleUpvoteUseCase {
     return updatedRecipe;
   }
 }
-
