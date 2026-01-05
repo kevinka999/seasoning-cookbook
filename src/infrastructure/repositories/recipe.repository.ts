@@ -19,6 +19,14 @@ export class RecipeRepository
     return new Recipe(document.toObject() as RecipeData);
   }
 
+  async findById(id: string): Promise<Recipe | null> {
+    const document = await this.model.findById(id).exec();
+    if (!document) {
+      return null;
+    }
+    return this.toEntity(document);
+  }
+
   async findByPokemonId(pokemonId: string): Promise<Recipe[]> {
     const documents = await this.model
       .find({ pokemonId })
@@ -63,10 +71,7 @@ export class RecipeRepository
     return this.toEntity(document);
   }
 
-  async removeUpvote(
-    recipeId: string,
-    userId: string,
-  ): Promise<Recipe | null> {
+  async removeUpvote(recipeId: string, userId: string): Promise<Recipe | null> {
     const document = await this.model
       .findOneAndUpdate(
         { id: recipeId, upvotedBy: userId },
