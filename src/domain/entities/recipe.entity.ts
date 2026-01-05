@@ -4,7 +4,7 @@ export enum RecipeCategory {
 }
 
 export interface RecipeData {
-  id: string;
+  _id?: string;
   authorId: string;
   pokemonId: string;
   seasoningItemIds: string[];
@@ -17,7 +17,7 @@ export interface RecipeData {
 }
 
 export class Recipe {
-  public readonly id: string;
+  public readonly _id: string;
   public readonly authorId: string;
   public readonly pokemonId: string;
   public readonly seasoningItemIds: string[];
@@ -29,7 +29,7 @@ export class Recipe {
   public readonly updatedAt: Date;
 
   constructor(data: RecipeData) {
-    this.id = data.id;
+    this._id = data._id || '';
     this.authorId = data.authorId;
     this.pokemonId = data.pokemonId;
     this.seasoningItemIds = data.seasoningItemIds;

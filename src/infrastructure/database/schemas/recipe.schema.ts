@@ -1,14 +1,14 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { RecipeData, RecipeCategory } from '../../../domain/entities/recipe.entity';
+import {
+  RecipeData,
+  RecipeCategory,
+} from '../../../domain/entities/recipe.entity';
 
 export type RecipeDocument = RecipeData & Document;
 
 @Schema({ collection: 'recipes', timestamps: true })
 export class RecipeSchema {
-  @Prop({ required: true, unique: true })
-  id: string;
-
   @Prop({ required: true, index: true })
   authorId: string;
 
@@ -47,4 +47,3 @@ export const RecipeSchemaFactory = SchemaFactory.createForClass(RecipeSchema);
 // Create compound indexes for optimized queries
 RecipeSchemaFactory.index({ upvoteCount: -1, createdAt: -1 });
 RecipeSchemaFactory.index({ pokemonId: 1, upvoteCount: -1 });
-

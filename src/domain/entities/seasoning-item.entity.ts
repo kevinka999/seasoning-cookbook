@@ -57,20 +57,20 @@ export interface ItemEffect {
 }
 
 export interface GameItem {
-  id: string;
+  _id?: string;
   item_name: string;
   effects: ItemEffect[];
   image?: string;
 }
 
 export class SeasoningItem {
-  public readonly id: string;
+  public readonly _id: string;
   public readonly itemName: string;
   public readonly effects: ItemEffect[];
   public readonly image?: string;
 
   constructor(data: GameItem) {
-    this.id = data.id;
+    this._id = data._id || '';
     this.itemName = data.item_name;
     this.effects = data.effects;
     this.image = data.image;

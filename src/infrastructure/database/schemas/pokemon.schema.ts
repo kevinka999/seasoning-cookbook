@@ -11,9 +11,6 @@ export type PokemonDocument = PokemonRegistryItem & Document;
 
 @Schema({ collection: 'pokemons', timestamps: false })
 export class PokemonSchema {
-  @Prop({ required: true, unique: true })
-  id: string;
-
   @Prop({ required: true })
   registrationNumber: string;
 

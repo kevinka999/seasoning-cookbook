@@ -14,11 +14,18 @@ export interface JwtPayload {
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
+  private readonly clientId: string;
+
   constructor(private configService: ConfigService) {
     const publicKey = configService.get<string>('JWT_PUBLIC_KEY');
 
     if (!publicKey) {
       throw new Error('JWT_PUBLIC_KEY is not defined in environment variables');
+    }
+
+    const clientId = configService.get<string>('CLIENT_ID');
+    if (!clientId) {
+      throw new Error('CLIENT_ID is not defined in environment variables');
     }
 
     super({
@@ -27,6 +34,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       secretOrKey: publicKey,
       algorithms: ['RS256'],
     });
+
+    this.clientId = clientId;
   }
 
   async validate(payload: JwtPayload): Promise<Identity> {
@@ -42,6 +51,10 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       throw new UnauthorizedException(
         'Application ID (aud) is required in token payload',
       );
+    }
+
+    if (payload.aud !== this.clientId) {
+      throw new UnauthorizedException('Invalid application ID (aud)');
     }
 
     return {

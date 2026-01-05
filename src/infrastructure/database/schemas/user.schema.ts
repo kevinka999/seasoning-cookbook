@@ -7,16 +7,10 @@ export type UserDocument = UserData & Document;
 @Schema({ collection: 'users', timestamps: true })
 export class UserSchema {
   @Prop({ required: true, unique: true })
-  id: string;
-
-  @Prop({ required: true, unique: true })
   identityId: string;
 
   @Prop({ required: true })
   nickname: string;
-
-  @Prop({ required: false, default: null, type: String })
-  inGameNickname: string | null;
 
   @Prop({ required: true })
   createdAt: Date;

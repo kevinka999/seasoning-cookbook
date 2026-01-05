@@ -73,9 +73,6 @@ const ItemEffectSchema = {
 
 @Schema({ collection: 'seasoning_items', timestamps: false })
 export class SeasoningItemSchema {
-  @Prop({ required: true, unique: true })
-  id: string;
-
   @Prop({ required: true })
   item_name: string;
 
@@ -88,4 +85,3 @@ export class SeasoningItemSchema {
 
 export const SeasoningItemSchemaFactory =
   SchemaFactory.createForClass(SeasoningItemSchema);
-

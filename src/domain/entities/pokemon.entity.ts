@@ -38,7 +38,7 @@ export type EggGroup =
   | 'water3';
 
 export type PokemonRegistryItem = {
-  id: string;
+  _id?: string;
   registrationNumber: string;
   name: string;
   bucket: PokemonBucket;
@@ -47,7 +47,7 @@ export type PokemonRegistryItem = {
 };
 
 export class Pokemon {
-  public readonly id: string;
+  public readonly _id: string;
   public readonly registrationNumber: string;
   public readonly name: string;
   public readonly bucket: PokemonBucket;
@@ -55,7 +55,7 @@ export class Pokemon {
   public readonly eggGroups: EggGroup[];
 
   constructor(data: PokemonRegistryItem) {
-    this.id = data.id;
+    this._id = data._id || '';
     this.registrationNumber = data.registrationNumber;
     this.name = data.name;
     this.bucket = data.bucket;
