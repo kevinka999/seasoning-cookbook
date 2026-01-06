@@ -18,7 +18,7 @@ export class CreateRecipeUseCase {
       pokemonId: dto.pokemonId,
       seasoningItemIds: dto.seasoningItemIds,
       description: dto.description ?? null,
-      category: [],
+      category: dto.category ?? [],
       upvoteCount: 0,
       upvotedBy: [],
       createdAt: now,
@@ -28,4 +28,3 @@ export class CreateRecipeUseCase {
     return this.recipeRepository.create(recipeData);
   }
 }
-
