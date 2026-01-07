@@ -1,5 +1,6 @@
 import { SearchPokemonsController } from './pokemons/search-pokemons/search-pokemons.controller';
 import { CreateUserController } from './users/create-user/create-user.controller';
+import { GetNicknameController } from './users/get-nickname/get-nickname.controller';
 import { CreateRecipeController } from './recipes/create-recipe/create-recipe.controller';
 import { ToggleUpvoteController } from './recipes/toggle-upvote/toggle-upvote.controller';
 import { ListAllSeasoningItemsController } from './seasoning-items/list-all/list-all-seasoning-items.controller';
@@ -8,6 +9,7 @@ import { SearchRecipesController } from './recipes/search-recipes/search-recipes
 export default [
   SearchPokemonsController,
   CreateUserController,
+  GetNicknameController,
   CreateRecipeController,
   ToggleUpvoteController,
   ListAllSeasoningItemsController,
