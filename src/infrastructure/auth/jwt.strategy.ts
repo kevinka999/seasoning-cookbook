@@ -17,11 +17,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   private readonly clientId: string;
 
   constructor(private configService: ConfigService) {
-    const publicKey = configService.get<string>('JWT_PUBLIC_KEY');
-
-    if (!publicKey) {
-      throw new Error('JWT_PUBLIC_KEY is not defined in environment variables');
-    }
+    const rawPublicKey = configService.get<string>('JWT_PUBLIC_KEY') ?? '';
+    const publicKey = rawPublicKey.replace(/^"|"$/g, '').replace(/\\n/g, '\n');
 
     const clientId = configService.get<string>('CLIENT_ID');
     if (!clientId) {
